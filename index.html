@@ -1,0 +1,1231 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Optimized Lifestyle Plan Tracker</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Inter Font -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-text-color: #5D3F80; /* Muted deep purple */
+            --secondary-text-color: #7B52AA; /* Medium muted purple */
+            --light-bg-color: #FCF8FF; /* Almost white lilac */
+            --header-footer-gradient-start: #E6D9F3; /* Very light lilac */
+            --header-footer-gradient-mid: #EDE5F7; /* Slightly deeper very light lilac */
+            --header-footer-gradient-end: #F5F0FB; /* Another very light lilac */
+            --table-header-bg: #F5F2F7; /* Very light muted lilac for table headers, almost white */
+            --table-border-color: #E1BEE7; /* Medium lavender border, subtly present */
+            --input-border-color: #D9C7E5; /* Subtle lilac border */
+            --input-focus-border: #A68CC2; /* Slightly deeper lilac on focus */
+            --tab-container-bg: #F5F2F7; /* Matches table headers */
+            --tab-inactive-text: #9B70C2; /* Subtle lilac text for inactive tabs */
+            --tab-active-gradient-start: #C9B4D7; /* Soft lilac gradient start */
+            --tab-active-gradient-end: #A68CC2; /* Soft lilac gradient end */
+            --teal-accent: #A7D9D3; /* Very light, muted teal as pop of color */
+            --progress-bar-fill: #81C784; /* Softer green for success/progress */
+            --mood-selected-bg: #FDE68A; /* Soft, light warm yellow for selected mood */
+            --mood-selected-border: #FFD54F; /* Slightly deeper yellow for border */
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--light-bg-color);
+            color: var(--primary-text-color);
+            overflow-x: hidden;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 1.5rem;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        th, td {
+            padding: 0.8rem 1rem;
+            border: 1px solid var(--table-border-color);
+            text-align: left;
+        }
+        th {
+            background-color: var(--table-header-bg);
+            font-weight: 600;
+            color: var(--secondary-text-color);
+        }
+        tr:nth-child(even) {
+            background-color: #F9F7FA; /* Even lighter, closer to white */
+        }
+        input[type="text"], textarea, input[type="date"], input[type="number"], select {
+            width: 100%;
+            padding: 0.5rem 0.75rem;
+            border: 1px solid var(--input-border-color);
+            border-radius: 0.5rem;
+            outline: none;
+            transition: border-color 0.2s, box-shadow 0.2s;
+            color: var(--primary-text-color);
+            background-color: #ffffff;
+        }
+        input[type="text"]:focus, textarea:focus, input[type="date"]:focus, input[type="number"]:focus, select:focus {
+            border-color: var(--input-focus-border);
+            box-shadow: 0 0 0 3px rgba(166, 140, 194, 0.4);
+        }
+        input[type="checkbox"] {
+            width: 1.5rem;
+            height: 1.5rem;
+            accent-color: var(--secondary-text-color); /* Muted medium lilac for checkbox */
+            border-radius: 0.375rem;
+            cursor: pointer;
+            transition: transform 0.2s ease-out;
+        }
+
+        input[type="checkbox"]:checked {
+            transform: scale(1.1);
+        }
+
+        .section-title {
+            font-size: 2.25rem;
+            font-weight: 700;
+            color: var(--secondary-text-color);
+            margin-bottom: 1.5rem;
+            border-bottom: 4px solid var(--teal-accent); /* Teal pop of color underline */
+            padding-bottom: 0.75rem;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.05);
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+        .subsection-title {
+            font-size: 1.75rem;
+            font-weight: 600;
+            color: var(--tab-inactive-text); /* A softer, slightly lighter variant */
+            margin-top: 2.5rem;
+            margin-bottom: 1.25rem;
+        }
+        .card {
+            background-color: #ffffff;
+            border-radius: 1.5rem;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.03); /* Softer, lighter shadow for depth */
+            padding: 2.5rem;
+            margin-bottom: 2.5rem;
+            overflow-x: auto;
+            transition: opacity 0.5s ease-in-out, transform 0.5s ease-in-out;
+        }
+        header {
+            background: linear-gradient(135deg, var(--header-footer-gradient-start), var(--header-footer-gradient-mid), var(--header-footer-gradient-end));
+            background-size: 200% 200%;
+            animation: gradientShift 10s ease infinite;
+            border-radius: 1.5rem 1.5rem 0 0;
+            padding: 2rem;
+            text-align: center;
+        }
+        header h1 {
+            color: var(--primary-text-color);
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.03);
+            font-size: 3.5rem;
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 1rem;
+        }
+        header p {
+            color: var(--secondary-text-color);
+            font-size: 1.3rem;
+            font-weight: 500;
+        }
+        footer {
+            background: linear-gradient(135deg, var(--header-footer-gradient-end), var(--header-footer-gradient-mid), var(--header-footer-gradient-start));
+            background-size: 200% 200%;
+            animation: gradientShift 10s ease infinite reverse;
+            border-radius: 0 0 1.5rem 1.5rem;
+            padding: 1.5rem;
+            text-align: center;
+        }
+        footer p {
+            color: var(--secondary-text-color);
+            font-size: 1rem;
+        }
+
+        /* Animated Gradient Keyframes */
+        @keyframes gradientShift {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        /* Tab specific styles */
+        .tabs-container {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 2rem;
+            background-color: var(--tab-container-bg);
+            border-radius: 1.5rem;
+            padding: 0.75rem;
+            box-shadow: inset 0 2px 6px rgba(0,0,0,0.07); /* Lighter inset shadow */
+        }
+        .tab-button {
+            flex: 1;
+            padding: 1.25rem 1.5rem;
+            background-color: transparent;
+            border: none;
+            border-radius: 1.25rem;
+            cursor: pointer;
+            font-weight: 600;
+            color: var(--tab-inactive-text);
+            transition: background-color 0.3s ease, color 0.3s ease, box-shadow 0.3s ease, transform 0.2s ease;
+            text-align: center;
+            font-size: 1.1rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+        }
+        .tab-button.active {
+            background: linear-gradient(to right, var(--tab-active-gradient-start), var(--tab-active-gradient-end));
+            color: #FFFFFF;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); /* Softer, but still prominent shadow for active tab */
+            transform: translateY(-3px);
+        }
+        .tab-button:hover:not(.active) {
+            background-color: #F3EBF9;
+            color: var(--secondary-text-color);
+            transform: translateY(-2px);
+        }
+
+        /* Date picker specific styling */
+        .date-picker-container {
+            text-align: center;
+            margin-bottom: 2.5rem;
+            padding: 1.25rem;
+            background-color: #F8F4FA;
+            border-radius: 1.25rem;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+        }
+        .date-picker-container label {
+            font-weight: 600;
+            color: var(--secondary-text-color);
+            margin-right: 1rem;
+            font-size: 1.1rem;
+        }
+        .date-picker-container input {
+            width: auto;
+            display: inline-block;
+            max-width: 220px;
+            font-size: 1.1rem;
+            cursor: pointer;
+        }
+
+        /* Mood selector buttons */
+        .mood-selector button {
+            background-color: #F0F4F8; /* Light gray-blue */
+            border: 1px solid #D9C7E5;
+            border-radius: 0.75rem;
+            padding: 0.5rem 0.75rem;
+            font-size: 1.5rem;
+            cursor: pointer;
+            transition: background-color 0.2s, transform 0.1s, box-shadow 0.2s;
+            margin: 0.2rem;
+            line-height: 1; /* Adjust line height for emojis */
+            box-shadow: 0 1px 3px rgba(0,0,0,0.03); /* Softer shadow */
+        }
+        .mood-selector button:hover {
+            background-color: #E6D9F3; /* Light lilac */
+            transform: translateY(-1px);
+        }
+        .mood-selector button.selected {
+            background-color: var(--mood-selected-bg); /* Highlight selected mood */
+            border-color: var(--mood-selected-border); /* Orange border */
+            transform: scale(1.05);
+            box-shadow: 0 2px 6px rgba(0,0,0,0.08); /* Softer selected shadow */
+        }
+
+        /* Progress Bar styles */
+        .progress-container {
+            width: 100%;
+            background-color: #E0E0E0; /* Light gray background for the bar */
+            border-radius: 0.5rem;
+            overflow: hidden;
+            height: 1.5rem; /* Height of the progress bar */
+            margin-top: 0.5rem;
+            box-shadow: inset 0 1px 3px rgba(0,0,0,0.05); /* Softer inset shadow */
+        }
+        .progress-bar {
+            height: 100%;
+            width: 0%; /* Initial width */
+            background-color: var(--progress-bar-fill); /* Green fill */
+            border-radius: 0.5rem;
+            text-align: center;
+            color: white;
+            line-height: 1.5rem; /* Center text vertically */
+            font-size: 0.8rem;
+            font-weight: 500;
+            transition: width 0.5s ease-out; /* Smooth width transition */
+        }
+
+        /* Custom select dropdown styling (kept from previous) */
+        select {
+            appearance: none;
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            background-image: url('data:image/svg+xml;utf8,<svg fill="%237B52AA" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><path d="M7 10l5 5 5-5z"/><path d="M0 0h24v24H0z" fill="none"/></svg>');
+            background-repeat: no-repeat;
+            background-position: right 0.75rem center;
+            background-size: 1.25rem;
+        }
+
+        /* Water Drop Icon for hydration */
+        .water-icon-button {
+            background-color: var(--teal-accent);
+            border-radius: 50%; /* Circle shape */
+            width: 2.5rem; /* Size of the button */
+            height: 2.5rem;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            cursor: pointer;
+            transition: background-color 0.2s, transform 0.1s;
+            margin-left: 0.5rem; /* Space from input */
+            vertical-align: middle; /* Align with input */
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        .water-icon-button:hover {
+            background-color: #8CC4BC; /* Slightly darker teal on hover */
+            transform: translateY(-2px) scale(1.05);
+        }
+
+        /* Mindful Moment Modal */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.4); /* Semi-transparent overlay */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s ease, visibility 0.3s ease;
+        }
+        .modal-overlay.open {
+            opacity: 1;
+            visibility: visible;
+        }
+        .mindful-modal-content {
+            background: linear-gradient(135deg, #F5F0FB, #EDE5F7); /* Soft lilac gradient */
+            padding: 3rem;
+            border-radius: 2rem;
+            text-align: center;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+            max-width: 90%;
+            width: 500px;
+            color: var(--primary-text-color);
+            transform: scale(0.9);
+            opacity: 0;
+            transition: transform 0.3s ease, opacity 0.3s ease;
+        }
+        .modal-overlay.open .mindful-modal-content {
+            transform: scale(1);
+            opacity: 1;
+        }
+        .mindful-modal-content h3 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 1.5rem;
+            color: var(--secondary-text-color);
+        }
+        .mindful-modal-content .timer {
+            font-size: 4rem;
+            font-weight: bold;
+            margin-bottom: 1.5rem;
+            color: var(--teal-accent); /* Teal for timer */
+            text-shadow: 1px 1px 3px rgba(0,0,0,0.1);
+        }
+        .mindful-modal-content .breathing-circle {
+            width: 100px;
+            height: 100px;
+            background-color: var(--tab-active-gradient-end); /* Muted purple */
+            border-radius: 50%;
+            margin: 2rem auto;
+            animation: breathe 8s infinite ease-in-out;
+            box-shadow: 0 0 15px rgba(0,0,0,0.2);
+        }
+        @keyframes breathe {
+            0% { transform: scale(1); opacity: 0.7; }
+            50% { transform: scale(1.2); opacity: 1; }
+            100% { transform: scale(1); opacity: 0.7; }
+        }
+        .mindful-modal-content .close-button {
+            background-color: var(--tab-active-gradient-end);
+            color: white;
+            padding: 0.75rem 1.5rem;
+            border-radius: 0.75rem;
+            cursor: pointer;
+            margin-top: 1.5rem;
+            transition: background-color 0.2s, transform 0.1s;
+            font-weight: 600;
+        }
+        .mindful-modal-content .close-button:hover {
+            background-color: var(--tab-active-gradient-start);
+            transform: translateY(-1px);
+        }
+    </style>
+</head>
+<body class="selection:bg-purple-200 selection:text-purple-900">
+    <div class="container bg-white rounded-3xl shadow-2xl my-8">
+        <header class="py-6 border-b border-purple-300 mb-8 rounded-t-3xl">
+            <h1>🌸 My Wellness Journey 🧘‍♀️</h1>
+            <p>Track your progress, embrace healthy habits, and glow!</p>
+        </header>
+
+        <div class="date-picker-container">
+            <label for="current-date">🗓️ Tracking Date:</label>
+            <input type="date" id="current-date" class="rounded-lg shadow-sm">
+        </div>
+
+        <div class="tabs-container">
+            <button class="tab-button active" data-tab="nutrition">🍎 Nutrition & Diet</button>
+            <button class="tab-button" data-tab="fitness">🏋️ Fitness & Movement</button>
+            <button class="tab-button" data-tab="schedule">⏰ Daily Schedule</button>
+            <button class="tab-button" data-tab="review">⭐ Weekly Review</button>
+        </div>
+
+        <!-- Tab Content Containers -->
+        <div id="nutrition" class="tab-content card">
+            <h2 class="section-title">🍎 I. Nutrition & Diet Tracker</h2>
+            <p class="text-secondary-text-color mb-4">Goal: Prioritize protein, fiber, and smart choices from hostel food, supplemented with your additions.</p>
+            <div class="overflow-x-auto">
+                <table class="min-w-full">
+                    <thead>
+                        <tr>
+                            <th class="w-1/6">Meal Time</th>
+                            <th class="w-1/4">Weekdays (Mon-Fri)</th>
+                            <th class="w-1/4">Weekends (Sat-Sun)</th>
+                            <th class="w-1/12 text-center">Done? (✓)</th>
+                            <th class="w-1/4">Notes / Mood 📝</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr id="nutrition-morning-drink">
+                            <td>6:30 AM: Morning Drink</td>
+                            <td>1-2 glasses water + 1-2 tbsp Apple Cider Vinegar (diluted)</td>
+                            <td>Consistent wake-up & morning drink.</td>
+                            <td class="text-center"><input type="checkbox" data-id="nutrition-morning-drink-check"></td>
+                            <td><input type="text" data-id="nutrition-morning-drink-notes" placeholder="Feeling hydrated!"></td>
+                        </tr>
+                        <tr id="nutrition-breakfast">
+                            <td>7:00 AM: Breakfast</td>
+                            <td>Choose ONE:<br>- 1/2 cup Muesli + 1 cup milk/water + 1-2 tbsp Chia Seeds + 1/2 cup Fruits<br>- 2-3 Boiled Eggs + 1 large Fruit</td>
+                            <td>Same as weekdays.</td>
+                            <td class="text-center"><input type="checkbox" data-id="nutrition-breakfast-check"></td>
+                            <td><input type="text" data-id="nutrition-breakfast-notes" placeholder="Protein packed!"></td>
+                        </tr>
+                        <tr id="nutrition-lunch">
+                            <td>1:00 PM: Lunch</td>
+                            <td>Hostel Mess<br>- Large portion of Protein (dal, paneer, chicken)<br>- Generous Veggies (avoid oily gravies)<br>- 1-2 Roti (whole wheat) OR Small portion of Rice<br>- Avoid fried items.</td>
+                            <td>Similar healthy choices, perhaps slightly more relaxed with portion sizes if active.</td>
+                            <td class="text-center"><input type="checkbox" data-id="nutrition-lunch-check"></td>
+                            <td><input type="text" data-id="nutrition-lunch-notes" placeholder="Balanced & filling!"></td>
+                        </tr>
+                        <tr id="nutrition-evening-snack">
+                            <td>4:30 PM: Evening Snack</td>
+                            <td>1 Fruit + Handful of Nuts<br>- Optional: Small curd/yogurt or 1 boiled egg if hungry</td>
+                            <td>Same, or slightly larger if you have a later dinner.</td>
+                            <td class="text-center"><input type="checkbox" data-id="nutrition-evening-snack-check"></td>
+                            <td><input type="text" data-id="nutrition-evening-snack-notes" placeholder="Healthy energy boost."></td>
+                        </tr>
+                        <tr id="nutrition-dinner">
+                            <td>7:30 PM: Dinner</td>
+                            <td>Hostel Mess<br>- Lean Protein & Large Veggies<br>- Fewer Carbs (e.g., 1 roti or skip rice if satisfied)<br>- Optional: Clear soup if available</td>
+                            <td>Similar, aiming for lighter options if possible.</td>
+                            <td class="text-center"><input type="checkbox" data-id="nutrition-dinner-check"></td>
+                            <td><input type="text" data-id="nutrition-dinner-notes" placeholder="Light & satisfying."></td>
+                        </tr>
+                        <tr id="nutrition-late-night">
+                            <td>Late Night</td>
+                            <td>(If hungry, before 9:30 PM): 1 glass warm water / Small handful almonds / 1/2 apple</td>
+                            <td class="text-center"><input type="checkbox" data-id="nutrition-late-night-check"></td>
+                            <td><input type="text" data-id="nutrition-late-night-notes" placeholder="Avoiding late night cravings."></td>
+                        </tr>
+                        <tr>
+                            <td>Daily Water Goal</td>
+                            <td>3-4 Litres (Track intake)</td>
+                            <td>3-4 Litres</td>
+                            <td class="text-center flex items-center justify-center space-x-2">
+                                <input type="number" data-id="nutrition-daily-water-input" min="0" max="4" step="0.5" placeholder="Liters">
+                                <button class="water-icon-button" aria-label="Add water">💧</button>
+                            </td>
+                            <td>
+                                <div class="progress-container">
+                                    <div class="progress-bar" id="water-progress-bar"></div>
+                                </div>
+                                <input type="text" data-id="nutrition-daily-water-notes" placeholder="Hydration goals smashed!">
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="mt-8">
+                <h3 class="subsection-title">Current Mood 😌</h3>
+                <div class="mood-selector flex justify-center space-x-2">
+                    <button data-id="mood-happy" data-mood-emoji="😊" aria-label="Happy">😊</button>
+                    <button data-id="mood-neutral" data-mood-emoji="😐" aria-label="Neutral">😐</button>
+                    <button data-id="mood-tired" data-mood-emoji="😴" aria-label="Tired">😴</button>
+                    <button data-id="mood-stressed" data-mood-emoji="😥" aria-label="Stressed">😥</button>
+                    <button data-id="mood-motivated" data-mood-emoji="💪" aria-label="Motivated">💪</button>
+                </div>
+                <input type="hidden" data-id="selected-mood">
+            </div>
+        </div>
+
+        <div id="fitness" class="tab-content card hidden">
+            <h2 class="section-title">🏋️ II. Fitness & Movement Tracker</h2>
+            <p class="text-secondary-text-color mb-4">Goal: 4-5 structured gym sessions per week + daily Non-Exercise Activity.</p>
+
+            <h3 class="subsection-title">Scheduled Activity 💪</h3>
+            <div class="overflow-x-auto">
+                <table class="min-w-full">
+                    <thead>
+                        <tr>
+                            <th class="w-1/12">Day</th>
+                            <th class="w-1/4">Scheduled Activity</th>
+                            <th class="w-1/6">Actual Activity</th>
+                            <th class="w-1/12">Duration</th>
+                            <th class="w-1/12">Intensity</th>
+                            <th class="w-1/4">Notes / How I Felt 🚀</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr id="fitness-monday">
+                            <td>Monday</td>
+                            <td>Full Body Strength (e.g., Squats, Push-ups, Rows, Plank)</td>
+                            <td><input type="text" data-id="fitness-monday-actual" placeholder="e.g., Gym Session"></td>
+                            <td><input type="text" data-id="fitness-monday-duration" placeholder="e.g., 60 min"></td>
+                            <td>
+                                <select data-id="fitness-monday-intensity">
+                                    <option value="">Select</option>
+                                    <option value="Low">Low</option>
+                                    <option value="Med">Med</option>
+                                    <option value="High">High</option>
+                                </select>
+                            </td>
+                            <td><input type="text" data-id="fitness-monday-notes" placeholder="Stronger every day!"></td>
+                        </tr>
+                        <tr id="fitness-tuesday">
+                            <td>Tuesday</td>
+                            <td>Cardio (HIIT or Steady) (e.g., Treadmill, Cycle, Elliptical)</td>
+                            <td><input type="text" data-id="fitness-tuesday-actual" placeholder="e.g., Treadmill HIIT"></td>
+                            <td><input type="text" data-id="fitness-tuesday-duration" placeholder="e.g., 30 min"></td>
+                            <td>
+                                <select data-id="fitness-tuesday-intensity">
+                                    <option value="">Select</option>
+                                    <option value="Low">Low</option>
+                                    <option value="Med">Med</option>
+                                    <option value="High">High</option>
+                                </select>
+                            </td>
+                            <td><input type="text" data-id="fitness-tuesday-notes" placeholder="Felt the burn!"></td>
+                        </tr>
+                        <tr id="fitness-wednesday">
+                            <td>Wednesday</td>
+                            <td>Full Body Strength (e.g., Lunges, Shoulder Press, Lat Pulldown, Leg Raises)</td>
+                            <td><input type="text" data-id="fitness-wednesday-actual" placeholder="e.g., Gym Session"></td>
+                            <td><input type="text" data-id="fitness-wednesday-duration" placeholder="e.g., 60 min"></td>
+                            <td>
+                                <select data-id="fitness-wednesday-intensity">
+                                    <option value="">Select</option>
+                                    <option value="Low">Low</option>
+                                    <option value="Med">Med</option>
+                                    <option value="High">High</option>
+                                </select>
+                            </td>
+                            <td><input type="text" data-id="fitness-wednesday-notes" placeholder="Pushing limits!"></td>
+                        </tr>
+                        <tr id="fitness-thursday">
+                            <td>Thursday</td>
+                            <td>Active Recovery / Rest (e.g., Gentle walk, Stretching, Yoga)</td>
+                            <td><input type="text" data-id="fitness-thursday-actual" placeholder="e.g., Gentle walk"></td>
+                            <td><input type="text" data-id="fitness-thursday-duration" placeholder="e.g., 20 min"></td>
+                            <td>
+                                <select data-id="fitness-thursday-intensity">
+                                    <option value="">Select</option>
+                                    <option value="Low">Low</option>
+                                    <option value="Med">Med</option>
+                                    <option value="High">High</option>
+                                </select>
+                            </td>
+                            <td><input type="text" data-id="fitness-thursday-notes" placeholder="Rest and recharge."></td>
+                        </tr>
+                        <tr id="fitness-friday">
+                            <td>Friday</td>
+                            <td>Full Body Strength (Mix of lower/upper/core from Mon/Wed)</td>
+                            <td><input type="text" data-id="fitness-friday-actual" placeholder="e.g., Gym Session"></td>
+                            <td><input type="text" data-id="fitness-friday-duration" placeholder="e.g., 60 min"></td>
+                            <td>
+                                <select data-id="fitness-friday-intensity">
+                                    <option value="">Select</option>
+                                    <option value="Low">Low</option>
+                                    <option value="Med">Med</option>
+                                    <option value="High">High</option>
+                                </select>
+                            </td>
+                            <td><input type="text" data-id="fitness-friday-notes" placeholder="Weekend ready!"></td>
+                        </tr>
+                        <tr id="fitness-saturday">
+                            <td>Saturday</td>
+                            <td>Longer Cardio / Active Recovery (e.g., Brisk Walk in park, Cycle)</td>
+                            <td><input type="text" data-id="fitness-saturday-actual" placeholder="e.g., Brisk walk"></td>
+                            <td><input type="text" data-id="fitness-saturday-duration" placeholder="e.g., 45 min"></td>
+                            <td>
+                                <select data-id="fitness-saturday-intensity">
+                                    <option value="">Select</option>
+                                    <option value="Low">Low</option>
+                                    <option value="Med">Med</option>
+                                    <option value="High">High</option>
+                                </select>
+                            </td>
+                            <td><input type="text" data-id="fitness-saturday-notes" placeholder="Enjoying the outdoors!"></td>
+                        </tr>
+                        <tr id="fitness-sunday">
+                            <td>Sunday</td>
+                            <td>Rest (Optional light stretching)</td>
+                            <td><input type="text" data-id="fitness-sunday-actual" placeholder="e.g., Rest/Stretch"></td>
+                            <td><input type="text" data-id="fitness-sunday-duration" placeholder="e.g., --"></td>
+                            <td>
+                                <select data-id="fitness-sunday-intensity">
+                                    <option value="">Select</option>
+                                    <option value="Low">Low</option>
+                                    <option value="Med">Med</option>
+                                    <option value="High">High</option>
+                                </select>
+                            </td>
+                            <td><input type="text" data-id="fitness-sunday-notes" placeholder="Perfect recovery."></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <h3 class="subsection-title">Daily NEAT Tracking (Non-Exercise Activity) 🚶‍♀️</h3>
+            <div class="overflow-x-auto">
+                <table class="min-w-full">
+                    <thead>
+                        <tr>
+                            <th class="w-1/12">Day</th>
+                            <th class="w-1/6 text-center">Stairs instead of elevator? (✓)</th>
+                            <th class="w-1/6 text-center">Hourly Work Breaks? (✓)</th>
+                            <th class="w-1/6 text-center">Walked during calls? (✓)</th>
+                            <th class="w-1/6">Total Daily Steps (Estimate/App)</th>
+                            <th class="w-1/4">Notes 💡</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr id="neat-monday">
+                            <td>Monday</td>
+                            <td class="text-center"><input type="checkbox" data-id="neat-monday-stairs"></td>
+                            <td class="text-center"><input type="checkbox" data-id="neat-monday-breaks"></td>
+                            <td class="text-center"><input type="checkbox" data-id="neat-monday-calls"></td>
+                            <td>
+                                <input type="number" data-id="neat-monday-steps-input" min="0" max="20000" step="500" placeholder="e.g., 8000">
+                                <div class="progress-container">
+                                    <div class="progress-bar" id="steps-monday-progress"></div>
+                                </div>
+                            </td>
+                            <td><input type="text" data-id="neat-monday-notes" placeholder="Keeping active!"></td>
+                        </tr>
+                        <tr id="neat-tuesday">
+                            <td>Tuesday</td>
+                            <td class="text-center"><input type="checkbox" data-id="neat-tuesday-stairs"></td>
+                            <td class="text-center"><input type="checkbox" data-id="neat-tuesday-breaks"></td>
+                            <td class="text-center"><input type="checkbox" data-id="neat-tuesday-calls"></td>
+                            <td>
+                                <input type="number" data-id="neat-tuesday-steps-input" min="0" max="20000" step="500" placeholder="e.g., 7500">
+                                <div class="progress-container">
+                                    <div class="progress-bar" id="steps-tuesday-progress"></div>
+                                </div>
+                            </td>
+                            <td><input type="text" data-id="neat-tuesday-notes" placeholder="Every step counts."></td>
+                        </tr>
+                        <tr id="neat-wednesday">
+                            <td>Wednesday</td>
+                            <td class="text-center"><input type="checkbox" data-id="neat-wednesday-stairs"></td>
+                            <td class="text-center"><input type="checkbox" data-id="neat-wednesday-breaks"></td>
+                            <td class="text-center"><input type="checkbox" data-id="neat-wednesday-calls"></td>
+                            <td>
+                                <input type="number" data-id="neat-wednesday-steps-input" min="0" max="20000" step="500" placeholder="e.g., 9000">
+                                <div class="progress-container">
+                                    <div class="progress-bar" id="steps-wednesday-progress"></div>
+                                </div>
+                            </td>
+                            <td><input type="text" data-id="neat-wednesday-notes" placeholder="Stepping it up!"></td>
+                        </tr>
+                        <tr id="neat-thursday">
+                            <td>Thursday</td>
+                            <td class="text-center"><input type="checkbox" data-id="neat-thursday-stairs"></td>
+                            <td class="text-center"><input type="checkbox" data-id="neat-thursday-breaks"></td>
+                            <td class="text-center"><input type="checkbox" data-id="neat-thursday-calls"></td>
+                            <td>
+                                <input type="number" data-id="neat-thursday-steps-input" min="0" max="20000" step="500" placeholder="e.g., 6000">
+                                <div class="progress-container">
+                                    <div class="progress-bar" id="steps-thursday-progress"></div>
+                                </div>
+                            </td>
+                            <td><input type="text" data-id="neat-thursday-notes" placeholder="Mindful movement."></td>
+                        </tr>
+                        <tr id="neat-friday">
+                            <td>Friday</td>
+                            <td class="text-center"><input type="checkbox" data-id="neat-friday-stairs"></td>
+                            <td class="text-center"><input type="checkbox" data-id="neat-friday-breaks"></td>
+                            <td class="text-center"><input type="checkbox" data-id="neat-friday-calls"></td>
+                            <td>
+                                <input type="number" data-id="neat-friday-steps-input" min="0" max="20000" step="500" placeholder="e.g., 8500">
+                                <div class="progress-container">
+                                    <div class="progress-bar" id="steps-friday-progress"></div>
+                                </div>
+                            </td>
+                            <td><input type="text" data-id="neat-friday-notes" placeholder="Active workday."></td>
+                        </tr>
+                        <tr id="neat-saturday">
+                            <td>Saturday</td>
+                            <td class="text-center"><input type="checkbox" data-id="neat-saturday-stairs"></td>
+                            <td class="text-center"><input type="checkbox" data-id="neat-saturday-breaks"></td>
+                            <td class="text-center"><input type="checkbox" data-id="neat-saturday-calls"></td>
+                            <td>
+                                <input type="number" data-id="neat-saturday-steps-input" min="0" max="20000" step="500" placeholder="e.g., 10000">
+                                <div class="progress-container">
+                                    <div class="progress-bar" id="steps-saturday-progress"></div>
+                                </div>
+                            </td>
+                            <td><input type="text" data-id="neat-saturday-notes" placeholder="Exploring new paths."></td>
+                        </tr>
+                        <tr id="neat-sunday">
+                            <td>Sunday</td>
+                            <td class="text-center"><input type="checkbox" data-id="neat-sunday-stairs"></td>
+                            <td class="text-center"><input type="checkbox" data-id="neat-sunday-breaks"></td>
+                            <td class="text-center"><input type="checkbox" data-id="neat-sunday-calls"></td>
+                            <td>
+                                <input type="number" data-id="neat-sunday-steps-input" min="0" max="20000" step="500" placeholder="e.g., 5000">
+                                <div class="progress-container">
+                                    <div class="progress-bar" id="steps-sunday-progress"></div>
+                                </div>
+                            </td>
+                            <td><input type="text" data-id="neat-sunday-notes" placeholder="Chilling, but still moving."></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div id="schedule" class="tab-content card hidden">
+            <h2 class="section-title">⏰ III. Your Daily Schedule & Well-being Tracker</h2>
+            <p class="text-secondary-text-color mb-4">Goal: Optimize your daily routine for energy, productivity, and rest.</p>
+            <div class="overflow-x-auto">
+                <table class="min-w-full">
+                    <thead>
+                        <tr>
+                            <th class="w-1/6">Time Block</th>
+                            <th class="w-1/4">Weekdays (Mon-Fri) Activity</th>
+                            <th class="w-1/4">Weekends (Sat-Sun) Activity</th>
+                            <th class="w-1/12 text-center">Done? (✓)</th>
+                            <th class="w-1/4">Notes / Energy Level ⚡</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr id="schedule-wake-up">
+                            <td>6:30 AM - 7:00 AM</td>
+                            <td>Wake Up, Hydrate, Light Stretching</td>
+                            <td>Consistent Wake-up.</td>
+                            <td class="text-center"><input type="checkbox" data-id="schedule-wake-up-check"></td>
+                            <td><input type="text" data-id="schedule-wake-up-notes" placeholder="Fresh start!"></td>
+                        </tr>
+                        <tr id="schedule-breakfast">
+                            <td>7:00 AM - 7:30 AM</td>
+                            <td>Breakfast</td>
+                            <td>Breakfast.</td>
+                            <td class="text-center"><input type="checkbox" data-id="schedule-breakfast-check"></td>
+                            <td><input type="text" data-id="schedule-breakfast-notes" placeholder="Fueling up."></td>
+                        </tr>
+                        <tr id="schedule-prep">
+                            <td>7:30 AM - 8:45 AM</td>
+                            <td>Get ready, Commute/Prep for work</td>
+                            <td>Relax, prepare for Saturday activity (gym/walk).</td>
+                            <td class="text-center"><input type="checkbox" data-id="schedule-prep-check"></td>
+                            <td><input type="text" data-id="schedule-prep-notes" placeholder="Ready for the day."></td>
+                        </tr>
+                        <tr id="schedule-work-block1">
+                            <td>9:00 AM - 1:00 PM</td>
+                            <td>Work Block 1 (Hourly active breaks!)</td>
+                            <td>Enjoy free time, hobbies, social connection.</td>
+                            <td class="text-center"><input type="checkbox" data-id="schedule-work-block1-check"></td>
+                            <td><input type="text" data-id="schedule-work-block1-notes" placeholder="Focused and productive."></td>
+                        </tr>
+                        <tr id="schedule-lunch-break">
+                            <td>1:00 PM - 1:45 PM</td>
+                            <td>Lunch Break</td>
+                            <td>Lunch.</td>
+                            <td class="text-center"><input type="checkbox" data-id="schedule-lunch-break-check"></td>
+                            <td><input type="text" data-id="schedule-lunch-break-notes" placeholder="Recharged after lunch."></td>
+                        </tr>
+                        <tr id="schedule-work-block2">
+                            <td>1:45 PM - 4:30 PM</td>
+                            <td>Work Block 2 (Hourly active breaks!)</td>
+                            <td>Continued hobbies/social, or prepare for the week ahead (e.g., organize snacks).</td>
+                            <td class="text-center"><input type="checkbox" data-id="schedule-work-block2-check"></td>
+                            <td><input type="text" data-id="schedule-work-block2-notes" placeholder="Getting things done."></td>
+                        </tr>
+                        <tr id="schedule-evening-snack">
+                            <td>4:30 PM - 5:00 PM</td>
+                            <td>Evening Snack</td>
+                            <td>Evening Snack.</td>
+                            <td class="text-center"><input type="checkbox" data-id="schedule-evening-snack-check"></td>
+                            <td><input type="text" data-id="schedule-evening-snack-notes" placeholder="Snack time!"></td>
+                        </tr>
+                        <tr id="schedule-work-block3">
+                            <td>5:00 PM - 6:30 PM</td>
+                            <td>Work Block 3</td>
+                            <td>Prepare for Sunday's rest/active recovery.</td>
+                            <td class="text-center"><input type="checkbox" data-id="schedule-work-block3-check"></td>
+                            <td><input type="text" data-id="schedule-work-block3-notes" placeholder="Finishing strong."></td>
+                        </tr>
+                        <tr id="schedule-commute-back">
+                            <td>6:30 PM - 7:00 PM</td>
+                            <td>Leave work, Commute back</td>
+                            <td>Relax, unwind.</td>
+                            <td class="text-center"><input type="checkbox" data-id="schedule-commute-back-check"></td>
+                            <td><input type="text" data-id="schedule-commute-back-notes" placeholder="Time to decompress."></td>
+                        </tr>
+                        <tr id="schedule-gym-dinner">
+                            <td>7:00 PM - 8:00 PM</td>
+                            <td>GYM SESSION</td>
+                            <td>Dinner.</td>
+                            <td class="text-center"><input type="checkbox" data-id="schedule-gym-dinner-check"></td>
+                            <td><input type="text" data-id="schedule-gym-dinner-notes" placeholder="Workout done!"></td>
+                        </tr>
+                        <tr id="schedule-cooldown">
+                            <td>8:00 PM - 8:30 PM</td>
+                            <td>Cool down, Shower, Relax</td>
+                            <td>Wind down for the evening.</td>
+                            <td class="text-center"><input type="checkbox" data-id="schedule-cooldown-check"></td>
+                            <td><input type="text" data-id="schedule-cooldown-notes" placeholder="Feeling refreshed."></td>
+                        </tr>
+                        <tr id="schedule-dinner-winddown">
+                            <td>8:30 PM - 9:00 PM</td>
+                            <td>Dinner</td>
+                            <td>Wind down, light reading, prepare for Monday.</td>
+                            <td class="text-center"><input type="checkbox" data-id="schedule-dinner-winddown-check"></td>
+                            <td><input type="text" data-id="schedule-dinner-winddown-notes" placeholder="Evening calm."></td>
+                        </tr>
+                        <tr id="schedule-prepare">
+                            <td>9:00 PM - 10:00 PM</td>
+                            <td>Wind down, Light reading, Prepare for next day (clothes, bag, etc.)</td>
+                            <td>Wind down, light reading, prepare for Monday.</td>
+                            <td class="text-center"><input type="checkbox" data-id="schedule-prepare-check"></td>
+                            <td><input type="text" data-id="schedule-prepare-notes" placeholder="Organized for tomorrow."></td>
+                        </tr>
+                        <tr id="schedule-bedtime">
+                            <td>10:00 PM - 10:30 PM</td>
+                            <td>Bedtime (Aim for 7-8 hours quality sleep)</td>
+                            <td>Consistent bedtime even on weekends to regulate sleep cycle.</td>
+                            <td class="text-center"><input type="checkbox" data-id="schedule-bedtime-check"></td>
+                            <td><input type="text" data-id="schedule-bedtime-notes" placeholder="Sweet dreams!"></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="mt-8">
+                <h3 class="subsection-title">Daily Stress Management 🧘‍♀️</h3>
+                <div class="flex items-center space-x-2 mb-2">
+                    <button id="start-mindful-moment" class="tab-button" aria-label="Start Mindful Moment">✨ Start Mindful Moment</button>
+                    <input type="checkbox" data-id="stress-mgmt-check">
+                    <label for="stress-mgmt-check" class="text-secondary-text-color">Engage in stress management activities.</label>
+                </div>
+                <textarea data-id="stress-mgmt-notes" rows="3" placeholder="Checked in with myself today."></textarea>
+            </div>
+        </div>
+
+        <div id="review" class="tab-content card hidden">
+            <h2 class="section-title">⭐ IV. My Weekly Review</h2>
+            <p class="text-secondary-text-color mb-4">Fill this out at the end of each week (e.g., Sunday evening) to assess progress and make adjustments.</p>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div>
+                    <h3 class="subsection-title">Nutrition 🍎</h3>
+                    <label for="review-nutrition-well" class="block text-sm font-medium text-secondary-text-color">What went well? (Celebrate! 🎉)</label>
+                    <textarea data-id="review-nutrition-well" rows="2" placeholder="e.g., Stuck to protein goals daily."></textarea>
+                    <label for="review-nutrition-challenging" class="block text-sm font-medium text-secondary-text-color mt-3">What was challenging? 🤔</label>
+                    <textarea data-id="review-nutrition-challenging" rows="2" placeholder="e.g., Weekend cravings for fried food."></textarea>
+                    <label for="review-nutrition-adjust" class="block text-sm font-medium text-secondary-text-color mt-3">How will I adjust next week? 🛠️</label>
+                    <textarea data-id="review-nutrition-adjust" rows="2" placeholder="e.g., Prepare healthier snacks for weekends."></textarea>
+                </div>
+
+                <div>
+                    <h3 class="subsection-title">Fitness 🏋️</h3>
+                    <label for="review-fitness-well" class="block text-sm font-medium text-secondary-text-color">What went well? (Celebrate! 🎉)</label>
+                    <textarea data-id="review-fitness-well" rows="2" placeholder="e.g., Hit all 4 gym sessions."></textarea>
+                    <label for="review-fitness-challenging" class="block text-sm font-medium text-secondary-text-color mt-3">What was challenging? 🤔</label>
+                    <textarea data-id="review-fitness-challenging" rows="2" placeholder="e.g., Low energy for Tuesday cardio."></textarea>
+                    <label for="review-fitness-adjust" class="block text-sm font-medium text-secondary-text-color mt-3">How will I adjust next week? 🛠️</label>
+                    <textarea data-id="review-fitness-adjust" rows="2" placeholder="e.g., Try a lighter cardio on Tuesday."></textarea>
+                </div>
+
+                <div>
+                    <h3 class="subsection-title">Schedule ⏰</h3>
+                    <label for="review-schedule-well" class="block text-sm font-medium text-secondary-text-color">What went well? (Celebrate! 🎉)</label>
+                    <textarea data-id="review-schedule-well" rows="2" placeholder="e.g., Consistent wake-up times."></textarea>
+                    <label for="review-schedule-challenging" class="block text-sm font-medium text-secondary-text-color mt-3">What was challenging? 🤔</label>
+                    <textarea data-id="review-schedule-challenging" rows="2" placeholder="e.g., Too much screen time before bed."></textarea>
+                    <label for="review-schedule-adjust" class="block text-sm font-medium text-secondary-text-color mt-3">How will I adjust next week? 🛠️</label>
+                    <textarea data-id="review-schedule-adjust" rows="2" placeholder="e.g., Read a physical book 30 min before sleep."></textarea>
+                </div>
+
+                <div>
+                    <h3 class="subsection-title">Well-being 🧘‍♀️</h3>
+                    <label for="review-wellbeing-well" class="block text-sm font-medium text-secondary-text-color">What went well? (Celebrate! 🎉)</label>
+                    <textarea data-id="review-wellbeing-well" rows="2" placeholder="e.g., Felt less stressed this week."></textarea>
+                    <label for="review-wellbeing-challenging" class="block text-sm font-medium text-secondary-text-color mt-3">What was challenging? 🤔</label>
+                    <textarea data-id="review-wellbeing-challenging" rows="2" placeholder="e.g., Felt overwhelmed on Thursday."></textarea>
+                    <label for="review-wellbeing-adjust" class="block text-sm font-medium text-secondary-text-color mt-3">How will I adjust next week? 🛠️</label>
+                    <textarea data-id="review-wellbeing-adjust" rows="2" placeholder="e.g., Incorporate a 5-min meditation break on stressful days."></textarea>
+                </div>
+
+                <div class="col-span-full">
+                    <h3 class="subsection-title">Overall 🌟</h3>
+                    <label for="review-overall-well" class="block text-sm font-medium text-secondary-text-color">What went well? (Celebrate! 🎉)</label>
+                    <textarea data-id="review-overall-well" rows="2" placeholder="e.g., Generally more energetic and positive."></textarea>
+                    <label for="review-overall-challenging" class="block text-sm font-medium text-secondary-text-color mt-3">What was challenging? 🤔</label>
+                    <textarea data-id="review-overall-challenging" rows="2" placeholder="e.g., Consistency on weekends."></textarea>
+                    <label for="review-overall-adjust" class="block text-sm font-medium text-secondary-text-color mt-3">How will I adjust next week? 🛠️</label>
+                    <textarea data-id="review-overall-adjust" rows="2" placeholder="e.g., Plan weekend activities in advance."></textarea>
+                </div>
+            </div>
+
+            <div class="mt-8 grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div>
+                    <label for="current-weight" class="block text-sm font-medium text-secondary-text-color">Current Weight: ______ kg (Optional: Track weekly) ⚖️</label>
+                    <input type="text" data-id="current-weight" placeholder="e.g., 75 kg">
+                </div>
+                <div>
+                    <label for="feeling" class="block text-sm font-medium text-secondary-text-color">Feeling: (e.g., Energetic, Tired, Motivated, Stressed) 😊</label>
+                    <input type="text" data-id="feeling" placeholder="e.g., Motivated">
+                </div>
+            </div>
+            <div class="mt-6">
+                <label for="new-habit" class="block text-sm font-medium text-secondary-text-color">One small, new habit I'll focus on next week: ✨ </label>
+                <input type="text" data-id="new-habit" placeholder="e.g., Drink water immediately after waking up.">
+            </div>
+        </div>
+
+        <!-- Mindful Moment Modal -->
+        <div id="mindful-moment-modal" class="modal-overlay hidden">
+            <div class="mindful-modal-content">
+                <h3>Mindful Moment</h3>
+                <p class="timer" id="mindful-timer">00:60</p>
+                <div class="breathing-circle"></div>
+                <p id="mindful-instruction">Breathe in... Breathe out...</p>
+                <button id="mindful-close-button" class="close-button hidden">Close</button>
+            </div>
+        </div>
+
+
+        <footer class="py-6 border-t border-purple-300 mt-8 rounded-b-3xl">
+            <p>Consistency is your most powerful tool! Keep shining! ✨</p>
+        </footer>
+    </div>
+
+    <script>
+        // Define constants for local storage keys
+        const STORAGE_PREFIX = 'lifestyleTracker_';
+        const WEEKLY_REVIEW_KEY = 'lifestyleTracker_weeklyReview';
+
+        // DOM Elements
+        const dateInput = document.getElementById('current-date');
+        const tabButtons = document.querySelectorAll('.tab-button');
+        const tabContents = document.querySelectorAll('.tab-content');
+        const moodButtons = document.querySelectorAll('.mood-selector button');
+        const waterInput = document.querySelector('[data-id="nutrition-daily-water-input"]');
+        const waterAddButton = document.querySelector('.water-icon-button');
+        const waterProgressBar = document.getElementById('water-progress-bar');
+        const stepInputs = document.querySelectorAll('[data-id$="-steps-input"]');
+
+        // Mindful Moment Elements
+        const mindfulMomentButton = document.getElementById('start-mindful-moment');
+        const mindfulModal = document.getElementById('mindful-moment-modal');
+        const mindfulTimerDisplay = document.getElementById('mindful-timer');
+        const mindfulInstruction = document.getElementById('mindful-instruction');
+        const mindfulCloseButton = document.getElementById('mindful-close-button');
+        let mindfulTimerInterval;
+
+        let currentSelectedDate = '';
+
+        // Set today's date as default
+        const today = new Date();
+        const year = today.getFullYear();
+        const month = (today.getMonth() + 1).toString().padStart(2, '0');
+        const day = today.getDate().toString().padStart(2, '0');
+        dateInput.value = `${year}-${month}-${day}`;
+        currentSelectedDate = dateInput.value;
+
+        // Function to update progress bar
+        function updateProgressBar(inputElement, progressBarElement, maxValue) {
+            if (!inputElement || !progressBarElement) { // Add null checks
+                console.warn("Progress bar elements not found for update.");
+                return;
+            }
+            const value = parseFloat(inputElement.value) || 0;
+            const percentage = (value / maxValue) * 100;
+            progressBarElement.style.width = `${Math.min(percentage, 100)}%`;
+            progressBarElement.textContent = `${value}/${maxValue}`;
+        }
+
+        // Function to get all daily input elements
+        function getDailyInputs() {
+            return document.querySelectorAll('#nutrition input[data-id], #nutrition textarea[data-id], #fitness input[data-id], #fitness textarea[data-id], #fitness select[data-id], #schedule input[data-id], #schedule textarea[data-id]');
+        }
+
+        // Function to get all weekly review input elements
+        function getWeeklyReviewInputs() {
+            return document.querySelectorAll('#review input[data-id], #review textarea[data-id]');
+        }
+
+        // Function to load data from Local Storage
+        function loadData() {
+            // Load daily data for the current selected date
+            const dailyInputs = getDailyInputs();
+            try {
+                const dailyData = JSON.parse(localStorage.getItem(STORAGE_PREFIX + currentSelectedDate) || '{}');
+                populateForm(dailyInputs, dailyData);
+            } catch (e) {
+                console.error("Error loading daily data from localStorage:", e);
+                // Even on error, clear inputs
+                populateForm(dailyInputs, {});
+            }
+
+            // Load weekly review data
+            const weeklyReviewInputs = getWeeklyReviewInputs();
+            try {
+                const weeklyReviewData = JSON.parse(localStorage.getItem(WEEKLY_REVIEW_KEY) || '{}');
+                populateForm(weeklyReviewInputs, weeklyReviewData);
+            } catch (e) {
+                console.error("Error loading weekly review data from localStorage:", e);
+                // Even on error, clear inputs
+                populateForm(weeklyReviewInputs, {});
+            }
+
+            updateAllProgressBars();
+            updateMoodSelection();
+            console.log(`Data for ${currentSelectedDate} loaded from local storage.`);
+        }
+
+        // Helper to populate form fields
+        function populateForm(inputs, data) {
+            inputs.forEach(input => {
+                const id = input.dataset.id;
+                if (data[id] !== undefined) {
+                    if (input.type === 'checkbox') {
+                        input.checked = data[id];
+                    } else {
+                        input.value = data[id];
+                    }
+                } else {
+                    // Clear input if no data
+                    if (input.type === 'checkbox') {
+                        input.checked = false;
+                    } else {
+                        input.value = '';
+                    }
+                }
+            });
+             // Clear mood selection if no data (explicitly needed because mood is a hidden input + buttons)
+            if (inputs.length > 0 && inputs[0].closest('#nutrition') && !data['selected-mood']) {
+                moodButtons.forEach(button => button.classList.remove('selected'));
+            }
+        }
+
+        // Helper to update all progress bars
+        function updateAllProgressBars() {
+            if (waterInput && waterProgressBar) {
+                updateProgressBar(waterInput, waterProgressBar, 4);
+            }
+            stepInputs.forEach(input => {
+                const day = input.dataset.id.split('-')[1];
+                const progressBarElement = document.getElementById(`steps-${day}-progress`);
+                if (progressBarElement) {
+                    updateProgressBar(input, progressBarElement, 10000);
+                }
+            });
+        }
+
+        // Helper to update mood selection UI
+        function updateMoodSelection() {
+            const selectedMoodInput = document.querySelector('[data-id="selected-mood"]');
+            if (!selectedMoodInput) return; // Null check
+            const selectedMoodEmoji = selectedMoodInput.value;
+            moodButtons.forEach(button => {
+                if (button.dataset.moodEmoji === selectedMoodEmoji) {
+                    button.classList.add('selected');
+                } else {
+                    button.classList.remove('selected');
+                }
+            });
+        }
+
+        // Function to save data to Local Storage
+        function saveData(event) {
+            const changedInput = event.target;
+            const isReviewSection = changedInput.closest('#review');
+            const dataToSave = {};
+
+            if (isReviewSection) {
+                getWeeklyReviewInputs().forEach(input => {
+                    dataToSave[input.dataset.id] = input.type === 'checkbox' ? input.checked : input.value;
+                });
+                localStorage.setItem(WEEKLY_REVIEW_KEY, JSON.stringify(dataToSave));
+                console.log("Weekly review data saved to local storage.");
+            } else {
+                getDailyInputs().forEach(input => {
+                    dataToSave[input.dataset.id] = input.type === 'checkbox' ? input.checked : input.value;
+                });
+                localStorage.setItem(STORAGE_PREFIX + currentSelectedDate, JSON.stringify(dataToSave));
+                console.log(`Daily data for ${currentSelectedDate} saved to local storage.`);
+            }
+
+            // Update progress bars immediately on relevant input changes
+            updateAllProgressBars();
+        }
+
+
+        // Handle date input change
+        dateInput.addEventListener('change', function() {
+            currentSelectedDate = dateInput.value;
+            loadData(); // Load data for the newly selected date
+        });
+
+        // Add event listeners for all data-id inputs (daily and weekly)
+        document.querySelectorAll('[data-id]').forEach(input => {
+            input.addEventListener('change', saveData);
+            if (input.type === 'text' || input.type === 'textarea' || input.type === 'number' || input.tagName === 'SELECT') {
+                input.addEventListener('input', saveData);
+            }
+        });
+
+        // Mood selector logic
+        moodButtons.forEach(button => {
+            button.addEventListener('click', function() {
+                moodButtons.forEach(btn => btn.classList.remove('selected'));
+                this.classList.add('selected');
+                const selectedMoodInput = document.querySelector('[data-id="selected-mood"]');
+                if (selectedMoodInput) { // Null check
+                    selectedMoodInput.value = this.dataset.moodEmoji;
+                    saveData({ target: selectedMoodInput }); // Trigger save for the hidden input
+                }
+            });
+        });
+
+        // Water Add Button logic
+        if (waterAddButton && waterInput && waterProgressBar) {
+            waterAddButton.addEventListener('click', function() {
+                let currentWater = parseFloat(waterInput.value) || 0;
+                currentWater += 0.5;
+                waterInput.value = Math.min(currentWater, 4).toFixed(1);
+                saveData({ target: waterInput });
+            });
+        }
+
+        // Mindful Moment Game Logic
+        if (mindfulMomentButton) {
+            mindfulMomentButton.addEventListener('click', () => {
+                mindfulModal.classList.add('open');
+                mindfulCloseButton.classList.add('hidden');
+                let timeLeft = 60;
+                mindfulTimerDisplay.textContent = `00:${timeLeft.toString().padStart(2, '0')}`;
+                mindfulInstruction.textContent = 'Breathe in... Breathe out...';
+
+                let cycle = 0;
+                const instructions = [
+                    'Breathe in slowly...',
+                    'Hold for a moment...',
+                    'Breathe out fully...',
+                    'Pause, then repeat...'
+                ];
+
+                const updateInstruction = () => {
+                    if (timeLeft <= 0) {
+                        clearInterval(mindfulTimerInterval);
+                        mindfulInstruction.textContent = 'You did great! Feeling calm?';
+                        mindfulTimerDisplay.textContent = '🧘‍♀️';
+                        mindfulCloseButton.classList.remove('hidden');
+                        return;
+                    }
+                    mindfulInstruction.textContent = instructions[cycle % instructions.length];
+                    cycle++;
+                };
+
+                updateInstruction();
+                mindfulTimerInterval = setInterval(() => {
+                    timeLeft--;
+                    mindfulTimerDisplay.textContent = `00:${timeLeft.toString().padStart(2, '0')}`;
+                    if (timeLeft % 10 === 0 && timeLeft > 0) {
+                        updateInstruction();
+                    }
+                    if (timeLeft <= 0) {
+                        clearInterval(mindfulTimerInterval);
+                        mindfulInstruction.textContent = 'You did great! Feeling calm?';
+                        mindfulTimerDisplay.textContent = '🌸';
+                        mindfulCloseButton.classList.remove('hidden');
+                    }
+                }, 1000);
+            });
+        }
+
+        if (mindfulCloseButton) {
+            mindfulCloseButton.addEventListener('click', () => {
+                mindfulModal.classList.remove('open');
+                clearInterval(mindfulTimerInterval);
+            });
+        }
+
+        // Tab switching logic
+        tabButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                const targetTab = button.dataset.tab;
+
+                // Deactivate all tabs and hide all content
+                tabButtons.forEach(btn => btn.classList.remove('active'));
+                tabContents.forEach(content => {
+                    if (content) { // Null check for content
+                        content.classList.add('hidden');
+                        content.style.opacity = '0';
+                        content.style.transform = 'translateY(10px)';
+                    }
+                });
+
+                // Activate the clicked tab and show its content
+                button.classList.add('active');
+                const activeContent = document.getElementById(targetTab);
+                if (activeContent) { // Null check for activeContent
+                    activeContent.classList.remove('hidden');
+                    requestAnimationFrame(() => {
+                        activeContent.style.opacity = '1';
+                        activeContent.style.transform = 'translateY(0)';
+                    });
+                } else {
+                    console.error(`Tab content with ID "${targetTab}" not found.`);
+                }
+
+                // Load data relevant to the active tab (general form fields)
+                loadData();
+            });
+        });
+
+        // Initial setup on page load (equivalent to authReady for local storage)
+        // Show the first tab (Nutrition) by default and load its data
+        document.querySelector('.tab-button[data-tab="nutrition"]').click();
+    </script>
+</body>
+</html>
